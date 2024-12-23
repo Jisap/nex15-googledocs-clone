@@ -3,7 +3,7 @@
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { useEditorStore } from "@/store/use-editor-store"
-import { BoldIcon, ItalicIcon, LucideIcon, PrinterIcon, Redo2Icon, SpellCheckIcon, UnderlineIcon, Undo2Icon } from "lucide-react"
+import { BoldIcon, ItalicIcon, ListTodoIcon, LucideIcon, MessageSquarePlusIcon, PrinterIcon, Redo2Icon, RemoveFormattingIcon, SpellCheckIcon, UnderlineIcon, Undo2Icon } from "lucide-react"
 
 
 interface ToolbarButtonProps {
@@ -85,6 +85,25 @@ export const Toolbar = () => {
         onClick: () => editor?.chain().focus().toggleUnderline().run(),
         isActive: editor?.isActive("underline")
       }
+    ],
+    [
+      {
+        label: "Comment",
+        icon: MessageSquarePlusIcon,
+        onClick: () => console.log("TODO: Comment"),
+        isActive: false
+      },
+      {
+        label: "List Todo",
+        icon: ListTodoIcon,
+        onClick: () => editor?.commands.toggleTaskList(),
+        isActive: editor?.isActive("taskList")
+      },
+      {
+        label: "Remove Formatting",
+        icon: RemoveFormattingIcon,
+        onClick: () => editor?.chain().focus().unsetAllMarks().run()
+      }
     ]
   
   ];
@@ -97,6 +116,10 @@ export const Toolbar = () => {
       ))}
       <Separator orientation="vertical" className="h-6 bg-neutral-300"/>
       {sections[1].map((item) => (
+        <ToolbarButton key={item.label} {...item} />
+      ))}
+      <Separator orientation="vertical" className="h-6 bg-neutral-300" />
+      {sections[2].map((item) => (
         <ToolbarButton key={item.label} {...item} />
       ))}
     </div>
