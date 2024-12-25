@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { type Level } from "@tiptap/extension-heading"
-import { type ColorResult, CirclePicker } from "react-color"
+import { type ColorResult, CirclePicker, SketchPicker } from "react-color"
 
 
 const TextColorButton = () => {
@@ -38,8 +38,8 @@ const TextColorButton = () => {
               backgroundColor: value
             }}  
           />
-          <DropdownMenuContent className="p-2.5">
-            <CirclePicker 
+          <DropdownMenuContent className="p-0">
+            <SketchPicker 
               color={value}
               onChange={onChange}
             />
