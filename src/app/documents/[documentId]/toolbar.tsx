@@ -3,7 +3,7 @@
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { useEditorStore } from "@/store/use-editor-store"
-import { BoldIcon, ChevronDownIcon, ItalicIcon, ListTodoIcon, LucideIcon, MessageSquarePlusIcon, PrinterIcon, Redo2Icon, RemoveFormattingIcon, SpellCheckIcon, UnderlineIcon, Undo2Icon } from "lucide-react"
+import { BoldIcon, ChevronDownIcon, Highlighter, ItalicIcon, ListTodoIcon, LucideIcon, MessageSquarePlusIcon, PrinterIcon, Redo2Icon, RemoveFormattingIcon, SpellCheckIcon, UnderlineIcon, Undo2Icon } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { type Level } from "@tiptap/extension-heading"
 import { type ColorResult, CirclePicker, SketchPicker } from "react-color"
+import Highlight from '@tiptap/extension-highlight';
 
 
 const TextColorButton = () => {
@@ -37,15 +38,40 @@ const TextColorButton = () => {
             style={{
               backgroundColor: value
             }}  
-          />
-          <DropdownMenuContent className="p-0">
-            <SketchPicker 
-              color={value}
-              onChange={onChange}
             />
-          </DropdownMenuContent>
         </button>
       </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-0">
+        <SketchPicker 
+          color={value}
+          onChange={onChange}
+        />
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+const HighlightColorButton = () => {
+  const { editor } = useEditorStore();
+
+  const onChange = (color: ColorResult) => {
+    editor?.chain().focus().setHighlight({ color: color.hex }).run();
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm"
+        >
+          <Highlighter className="size-4" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-0">
+        <SketchPicker
+          onChange={onChange}
+        />
+      </DropdownMenuContent>
     </DropdownMenu>
   )
 }
@@ -275,6 +301,7 @@ export const Toolbar = () => {
         <ToolbarButton key={item.label} {...item} />
       ))}
       <TextColorButton />
+      <HighlightColorButton />
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
       {sections[2].map((item) => (
         <ToolbarButton key={item.label} {...item} />
