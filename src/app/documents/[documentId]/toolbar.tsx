@@ -54,6 +54,8 @@ const TextColorButton = () => {
 const HighlightColorButton = () => {
   const { editor } = useEditorStore();
 
+  const value = editor?.getAttributes("highlight").color || "#FFFFFF";
+
   const onChange = (color: ColorResult) => {
     editor?.chain().focus().setHighlight({ color: color.hex }).run();
   }
@@ -69,6 +71,7 @@ const HighlightColorButton = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="p-0">
         <SketchPicker
+          color={value}
           onChange={onChange}
         />
       </DropdownMenuContent>
