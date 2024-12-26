@@ -3,22 +3,116 @@
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { useEditorStore } from "@/store/use-editor-store"
-import { BoldIcon, ChevronDownIcon, Highlighter, ItalicIcon, Link2Icon, ListTodoIcon, LucideIcon, MessageSquarePlusIcon, PrinterIcon, Redo2Icon, RemoveFormattingIcon, SpellCheckIcon, UnderlineIcon, Undo2Icon } from "lucide-react"
+import { BoldIcon, ChevronDownIcon, Highlighter, ImageIcon, ItalicIcon, Link2Icon, ListTodoIcon, LucideIcon, MessageSquarePlusIcon, PrinterIcon, Redo2Icon, RemoveFormattingIcon, SearchIcon, SpellCheckIcon, UnderlineIcon, Undo2Icon, UploadIcon } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { type Level } from "@tiptap/extension-heading"
 import { type ColorResult, CirclePicker, SketchPicker } from "react-color"
-import Highlight from '@tiptap/extension-highlight';
-import Link from '@tiptap/extension-link';
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { on } from "events"
+
+
+
+const ImageButton = () => {
+  const { editor } = useEditorStore();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+
+  const onChange = (src: string) => {
+    editor?.chain().focus().setImage({ src }).run();         // Establece la imagen seleccionada en el editor
+  };
+
+  const onUpload = () => {
+    const input = document.createElement("input");           // Crea un input type="file" para seleccionar la imagen
+    input.type = "file";
+    input.accept = "image/*";
+
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0] // Obtiene el archivo seleccionado desde el input
+      if(file){
+        const ImageUrl = URL.createObjectURL(file);          // Crea una URL para el archivo seleccionado
+        onChange(ImageUrl);                                  // Establece la URL en el editor
+      }
+    }
+
+    input.click()                                            // Muestra el input para seleccionar la imagen
+  }
+
+  const handleImageUrlSubmit = () => {                       // Cuando se presiona Enter en el input de la URL de la imagen
+    if(imageUrl){
+      onChange(imageUrl);                                    // se establece la imagen seleccionada en el editor
+      setImageUrl("");
+      setIsDialogOpen(false);
+    }
+
+  }
+
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild >
+          <button
+            className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm"
+          >
+            <ImageIcon className="size-4" />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          {/* onUpload crea un input para seleccionar la imagen y luego llama a onChange para establecer la imagen en el editor */}
+          <DropdownMenuItem onClick={onUpload}>
+            <UploadIcon className="size-4 mr-2" />
+            Upload
+          </DropdownMenuItem>
+          {/* Abre un dialogo para insertar la URL de la imagen */}
+          <DropdownMenuItem onClick={() => setIsDialogOpen(true)}>
+            <SearchIcon className="size-4 mr-2" />
+            Paste image url
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Inser image url</DialogTitle>
+          </DialogHeader>
+          <Input 
+            placeholder="Insert image url"
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
+            onKeyDown={(e) => {
+              if(e.key === "Enter"){
+                handleImageUrlSubmit();
+              }
+            }}
+          />
+          <DialogFooter>
+            <Button
+              onClick={handleImageUrlSubmit}
+            >
+              Insert
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
+  )
+}
 
 const LinkButton = () => {
   const { editor } = useEditorStore();
@@ -346,6 +440,7 @@ export const Toolbar = () => {
       <HighlightColorButton />
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
       <LinkButton />
+      <ImageButton />
       {sections[2].map((item) => (
         <ToolbarButton key={item.label} {...item} />
       ))}
