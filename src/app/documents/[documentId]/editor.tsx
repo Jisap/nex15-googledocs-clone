@@ -56,7 +56,9 @@ export const Editor = () => {
     },
     extensions: [
       StarterKit,
-      TextAlign,
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
       Link.configure({
         openOnClick: false,
         autolink: true,

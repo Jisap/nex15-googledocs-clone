@@ -3,7 +3,7 @@
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { useEditorStore } from "@/store/use-editor-store"
-import { AlignCenterIcon, AlignLeftIcon, AlignRightIcon, BoldIcon, ChevronDownIcon, Highlighter, ImageIcon, ItalicIcon, Link2Icon, ListTodoIcon, LucideIcon, MessageSquarePlusIcon, PrinterIcon, Redo2Icon, RemoveFormattingIcon, SearchIcon, SpellCheckIcon, UnderlineIcon, Undo2Icon, UploadIcon } from "lucide-react"
+import { AlignCenterIcon, AlignJustifyIcon, AlignLeftIcon, AlignRightIcon, BoldIcon, ChevronDownIcon, Highlighter, ImageIcon, ItalicIcon, Link2Icon, ListTodoIcon, LucideIcon, MessageSquarePlusIcon, PrinterIcon, Redo2Icon, RemoveFormattingIcon, SearchIcon, SpellCheckIcon, UnderlineIcon, Undo2Icon, UploadIcon } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,6 +45,11 @@ const AlignButton = () => {
       value: "right",
       icon: AlignRightIcon,
     },
+    {
+      label: "Align Justify",
+      value: "justify",
+      icon: AlignJustifyIcon,
+    }
   ]
 
   return (
@@ -66,8 +71,8 @@ const AlignButton = () => {
               editor?.isActive({ textAlign: value }) && "bg-neutral-200/80"
             )}
           >
-            <Icon />
-            <span>{label}</span>
+            <Icon className="size-4" />
+            <span className="text-sm">{label}</span>
           </button>
         ))}
       </DropdownMenuContent>
@@ -488,6 +493,7 @@ export const Toolbar = () => {
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
       <LinkButton />
       <ImageButton />
+      <AlignButton />
       {sections[2].map((item) => (
         <ToolbarButton key={item.label} {...item} />
       ))}
