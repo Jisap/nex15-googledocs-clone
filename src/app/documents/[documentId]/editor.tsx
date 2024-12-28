@@ -101,7 +101,7 @@ export const Editor = () => {
         </tbody>
       </table>
       `,
-    //immediatelyRender: false,
+    immediatelyRender: false,
   })
 
 
