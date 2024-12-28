@@ -1,7 +1,7 @@
 
 
 
-import { Extension } from "@tiptap/react";
+import { Extension } from "@tiptap/core";
 import "@tiptap/extension-text-style"
 
 // Esta extensión personalizada:
@@ -20,7 +20,7 @@ declare module "@tiptap/core" {                                 // Este bloque a
   }
 }
 
-export const FontSize = Extension.create({                      // Creación de la extensión FontSize
+export const FontSizeExtension = Extension.create({             // Creación de la extensión FontSizeExtension.
   name: "fontSize",
   addOptions() {                                                // addOptions: Define configuraciones personalizadas para la extensión
     return {
@@ -32,15 +32,15 @@ export const FontSize = Extension.create({                      // Creación de 
       {
         types: this.options.types,
         attributes: {
-          fontsize: {
+          fontSize: {
             default: null,                                      // Valor inicial del atributo (nulo si no se establece un tamaño).
             parseHTML: element => element.style.fontSize,       // Define cómo extraer el tamaño de fuente (fontSize) del HTML cuando se carga contenido en el editor.
             renderHTML: attributes => {                         // Define cómo representar el tamaño de fuente en HTML al generar el contenido del editor.
-              if(!attributes.fontsize){
+              if(!attributes.fontSize){
                 return {}
               }
               return {
-                style: `font-size: ${attributes.fontsize}`      // Si attributes.fontsize está presente, se agrega un estilo CSS como style="font-size: ...". 
+                style: `font-size: ${attributes.fontSize}`      // Si attributes.fontsize está presente, se agrega un estilo CSS como style="font-size: ...". 
               }
             }
           }
