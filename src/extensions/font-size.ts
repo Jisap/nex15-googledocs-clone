@@ -1,7 +1,7 @@
 
 
 
-import { Extension } from "@tiptap/core";
+import { Extension } from "@tiptap/react";
 import "@tiptap/extension-text-style"
 
 // Esta extensión personalizada:
