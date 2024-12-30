@@ -11,17 +11,26 @@ export const Ruler = () => {
         <div className="absolute inset-x-0 bottom-0 h-full">
           <div className="relative h-full w-[816px]"> 
             {markers.map((marker) => {
-              const position = (marker * 816) /82;
+              const position = (marker * 816) / 82; // divide by 82 to get the position in pixels
               return (
                 <div
                   key={marker}
                   className="absolute bottom-0"
                   style={{ left: `${position}px`}}
                 >
-                  {marker % 10 === 0 && (
+                  {marker % 10 === 0 && ( // show a marker every 10 pixels
                     <>
                       <div className="absolute bottom-0 w-[1px] h-2 bg-neutral-500" />
+                      <span className="absolute bottom-2 text-[10px] text-neutral-500 transform -translate-x-1/2">
+                        {marker / 10 + 1}  
+                      </span>
                     </>
+                  )}
+                  {marker % 5 === 0 && marker % 10 !== 0 && ( // show a marker every 5 pixels and every 10 pixels with h-[1.5px]
+                    <div className="absolute bottom-0 w-[1px] h-1.5 bg-neutral-500" />
+                  )}
+                  {marker % 5 !== 0 && ( // show a marker every 5 pixels with h-[1px]
+                    <div className="absolute bottom-0 w-[1px] h-1 bg-neutral-500" />
                   )}
                 </div>
               )
