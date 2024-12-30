@@ -22,18 +22,18 @@ export const Ruler = () => {
     setIsDraggingRight(true);
   }
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = (e: React.MouseEvent) => {                         // Calcula la nueva posición del marcador en función de la posición del ratón.
     if((isDraggingLeft || isDraggingRight) && rulerRef.current) {
-      const container = rulerRef.current.querySelector("#ruler-container");
+      const container = rulerRef.current.querySelector("#ruler-container");  // Obtiene el contenedor de la regla
       if(container) {
-        const containerRect = container.getBoundingClientRect();
-        const relativeX = e.clientX - containerRect.left;
-        const rawPosition = Math.max(0, Math.min(816, relativeX))
+        const containerRect = container.getBoundingClientRect();             // Obtiene el rectángulo del contenedor (containerRect).
+        const relativeX = e.clientX - containerRect.left;                    // Calcula la posición del cursor del ratón con respecto a los límites del contenedor (relativeX).
+        const rawPosition = Math.max(0, Math.min(816, relativeX))            // Limita el valor de relativeX para que no sobrepase los límites de la regla
       
-        if(isDraggingLeft){
-          const maxLeftPosition = 816 - rightMargin - 100;
-          const newLeftPosition = Math.min(rawPosition, maxLeftPosition)
-          setLeftMargin(newLeftPosition); 
+        if (isDraggingLeft) {                                                // Si el marcador está siendo arrastrado a la izquierda 
+          const maxLeftPosition = 816 - rightMargin - 100;                   // calcula la posición máxima que puede tener el marcador izquierdo,
+          const newLeftPosition = Math.min(rawPosition, maxLeftPosition)     // y establece la nueva posición del marcador izquierdo como el mínimo entre el valor actual y la posición máxima.
+          setLeftMargin(newLeftPosition);                                    // Actualiza el estado del marcador izquierdo.
         }else if(isDraggingRight){
           const maxRightPosition = 816 - leftMargin + 100;
           const newRightPosition = Math.max(816 - rawPosition, 0)
@@ -134,6 +134,17 @@ const Marker = ({ position, isLeft, isDragging, onMouseDown, onDoubleClick }: Ma
       onDoubleClick={onDoubleClick}
     >
       <FaCaretDown className="absolute left-1/2 top-0 h-full fill-blue-500 transform -translate-x-1/2" />
+      <div 
+        className="absolute left-1/2 top-4 transform -translate-x-1/2 duration-150"
+        style={{
+          height: "100vh",
+          width: "1px",
+          transform: "scaleX(0.5)",
+          backgroundColor: "#3b72f6",
+          display: isDragging ? "block" : "none",
+
+        }}
+      />
     </div>
   )
 }
