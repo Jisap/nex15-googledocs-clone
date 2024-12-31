@@ -16,7 +16,7 @@ import {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "@/components/ui/menubar"
-import { FileIcon, FileJsonIcon, FilePenIcon, FilePlusIcon, FileTextIcon, GlobeIcon, PrinterIcon, TrashIcon } from "lucide-react"
+import { FileIcon, FileJsonIcon, FilePenIcon, FilePlusIcon, FileTextIcon, GlobeIcon, Menu, PrinterIcon, Redo2Icon, TrashIcon, Undo2Icon } from "lucide-react"
 import { BsFilePdf } from "react-icons/bs"
 
 
@@ -91,12 +91,43 @@ const Navbar = () => {
                 <MenubarTrigger className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
                   Edit
                 </MenubarTrigger>
+                <MenubarContent>
+                  <MenubarItem>
+                    <Undo2Icon className="size-4 mr-2" />
+                    Undo <MenubarShortcut>Ctrl + Z</MenubarShortcut>
+                  </MenubarItem>
+                  <MenubarItem>
+                    <Redo2Icon className="size-4 mr-2" />
+                    Redo <MenubarShortcut>Ctrl + Y</MenubarShortcut>
+                  </MenubarItem>
+                </MenubarContent>
               </MenubarMenu>
 
               <MenubarMenu>
                 <MenubarTrigger className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
                   Insert
                 </MenubarTrigger>
+                <MenubarContent>
+                  <MenubarSub>
+                    <MenubarSubTrigger>
+                      Table
+                    </MenubarSubTrigger>
+                    <MenubarSubContent>
+                      <MenubarItem>
+                        1 x 1
+                      </MenubarItem>
+                      <MenubarItem>
+                        2 x 2
+                      </MenubarItem>
+                      <MenubarItem>
+                        3 x 3
+                      </MenubarItem>
+                      <MenubarItem>
+                        4 x 4
+                      </MenubarItem>
+                    </MenubarSubContent>
+                  </MenubarSub>
+                </MenubarContent>
               </MenubarMenu>
 
               <MenubarMenu>
