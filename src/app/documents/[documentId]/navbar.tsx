@@ -1,3 +1,6 @@
+"use client"
+
+
 import Image from "next/image"
 import Link from "next/link"
 import { DocumentInput } from "./document-input"
@@ -13,7 +16,7 @@ import {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "@/components/ui/menubar"
-import { FileIcon, FileJsonIcon, FileTextIcon, GlobeIcon } from "lucide-react"
+import { FileIcon, FileJsonIcon, FilePenIcon, FilePlusIcon, FileTextIcon, GlobeIcon, PrinterIcon, TrashIcon } from "lucide-react"
 import { BsFilePdf } from "react-icons/bs"
 
 
@@ -63,6 +66,24 @@ const Navbar = () => {
                       </MenubarItem>
                     </MenubarSubContent>
                   </MenubarSub>
+                  <MenubarItem>
+                    <FilePlusIcon className="size-4 mr-2" />
+                    New Document
+                  </MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem>
+                    <FilePenIcon className="size-4 mr-2" />
+                    Rename
+                  </MenubarItem>
+                  <MenubarItem>
+                    <TrashIcon className="size-4 mr-2" />
+                    Remove
+                  </MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem onClick={() => window.print()}>
+                    <PrinterIcon className="size-4 mr-2" />
+                    Print <MenubarShortcut>Ctrl + P</MenubarShortcut>
+                  </MenubarItem>
                 </MenubarContent>
               </MenubarMenu>
 
