@@ -155,8 +155,8 @@ const Navbar = () => {
                       </MenubarItem>
                       <MenubarItem>
                         <StrikethroughIcon className="size-4 mr-2" />
-                        <span className="truncate max-w-[50px]">
-                          Strikethrough 
+                        <span>
+                          Strikethrough&nbsp;&nbsp; 
                         </span>
                         <MenubarShortcut>Ctrl + S</MenubarShortcut>
                       </MenubarItem>
