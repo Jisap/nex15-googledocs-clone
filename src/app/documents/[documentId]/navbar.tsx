@@ -19,6 +19,7 @@ import {
 import { BoldIcon, FileIcon, FileJsonIcon, FilePenIcon, FilePlusIcon, FileTextIcon, GlobeIcon, ItalicIcon, Menu, PrinterIcon, Redo2Icon, RemoveFormatting, RemoveFormattingIcon, StrikethroughIcon, TextIcon, TrashIcon, UnderlineIcon, Undo2Icon } from "lucide-react"
 import { BsFilePdf } from "react-icons/bs"
 import { useEditorStore } from "@/store/use-editor-store"
+import { Editor } from "./editor"
 
 
 
@@ -28,6 +29,35 @@ const Navbar = () => {
   
   const insertTable = ({ rows, cols }: { rows: number, cols: number }) => {
     editor?.chain().focus().insertTable({ rows, cols,withHeaderRow: false }).run()
+  }
+
+  const onDownload = (blob:Blob, filename:string) => {      // Función para descargar el contentido del editor como un archivo
+    const url = URL.createObjectURL(blob);                  // Crea una URL para el blob
+    const a = document.createElement('a');                  // Crea un elemento <a> para el link
+    a.href = url;                                           // Establece la URL del link
+    a.download = filename;                                  // Nombre del archivo
+    a.click();                                              // Genera el click del link
+  }
+
+  const onSaveJSON = () => {                                                                // Función para guardar el contenido del editor como JSON
+    if(!editor) return;
+    const content = editor.getJSON();                                                       // Obtiene el contenido del editor como JSON
+    const blob = new Blob([JSON.stringify(content)], { type: 'application/json' });         // Crea un blob con el JSON
+    onDownload(blob, 'document.json');                                                      // Descarga el archivo con la función de onDownload
+  }
+
+  const onSaveHTML = () => {                                                                // Función para guardar el contenido del editor como HTML
+    if(!editor) return
+    const content = editor.getHTML();                                                       // Obtiene el contenido del editor como HTML
+    const blob = new Blob([content], { type: 'text/html' });                                // Crea un blob con el HTML
+    onDownload(blob, 'document.html');                                                      // Descarga el archivo con la función de onDownload
+  }
+
+  const onSaveText = () => {                                                                // Función para guardar el contenido del editor como texto
+    if(!editor) return
+    const content = editor.getText();                                                       // Obtiene el contenido del editor como texto
+    const blob = new Blob([content], { type: 'text/plain' });                               // Crea un blob con el texto
+    onDownload(blob, 'document.txt');                                                      // Descarga el archivo con la función de onDownload
   }
 
   return (
@@ -57,19 +87,19 @@ const Navbar = () => {
                       Save
                     </MenubarSubTrigger>
                     <MenubarSubContent>
-                      <MenubarItem>
+                      <MenubarItem onClick={onSaveJSON}>
                         <FileJsonIcon className="size-4 mr-2" />
                         JSON
                       </MenubarItem>
-                      <MenubarItem>
+                      <MenubarItem onClick={onSaveHTML}>
                         <GlobeIcon className="size-4 mr-2" />
                         HTML
                       </MenubarItem>
-                      <MenubarItem>
+                      <MenubarItem onClick={() => window.print()}>
                         <BsFilePdf className="size-4 mr-2" />
                         PDF
                       </MenubarItem>
-                      <MenubarItem>
+                      <MenubarItem onClick={onSaveText}>
                         <FileTextIcon className="size-4 mr-2" />
                         Text
                       </MenubarItem>
@@ -172,7 +202,7 @@ const Navbar = () => {
                     </MenubarSubContent>
                   </MenubarSub>
 
-                  <MenubarItem>
+                  <MenubarItem onClick={() => editor?.chain().focus().unsetAllMarks().run()}>
                     <RemoveFormattingIcon className="size-4 mr-2" />
                     Clear Formating
                   </MenubarItem>
