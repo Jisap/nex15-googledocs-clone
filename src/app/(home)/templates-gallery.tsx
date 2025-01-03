@@ -7,9 +7,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+import { templates } from "@/constants/templates";
 import { cn } from "@/lib/utils"
 
-const templates = [{ id: "blank", label: "Blank Document", imageUrl: "/logo.svg"}]
+
 
 const TemplatesGallery = () => {
 
@@ -42,8 +43,7 @@ const TemplatesGallery = () => {
                       backgroundRepeat: "no-repeat",
                     }}
                     className="size-full hover:border-blue-500 rounded-sm border hover:bg-blue-50 transition flex flex-col items-center justify-center gap-y-4 bg-white"
-                  >
-                  </button>  
+                  />
                   <p className="text-sm font-medium truncate">
                     {template.label}
                   </p>
