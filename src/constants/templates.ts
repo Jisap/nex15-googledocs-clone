@@ -13,6 +13,11 @@ export const templates = [
     imageUrl: "/software-proposal.svg"
   },
   {
+    id: "project-proposal",
+    label: "Project proposal",
+    imageUrl: "/project-proposal.svg"
+  }, 
+  {
     id: "business-letter",
     label: "Business letter",
     imageUrl: "/business-letter.svg"
