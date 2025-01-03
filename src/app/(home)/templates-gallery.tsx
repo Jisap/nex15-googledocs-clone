@@ -43,10 +43,10 @@ const TemplatesGallery = () => {
                     }}
                     className="size-full hover:border-blue-500 rounded-sm border hover:bg-blue-50 transition flex flex-col items-center justify-center gap-y-4 bg-white"
                   >
-                    <p className="text-sm font-medium truncate">
-                      {template.label}
-                    </p>
                   </button>  
+                  <p className="text-sm font-medium truncate">
+                    {template.label}
+                  </p>
                 </div>
               </CarouselItem>
             ))}
