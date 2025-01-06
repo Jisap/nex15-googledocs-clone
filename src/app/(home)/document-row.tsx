@@ -27,7 +27,7 @@ const DocumentRow = ({ document }: DocumentRowProps) => {
       <TableCell className="text-muted-foreground hidden md:table-cell">
         {format(new Date(document._creationTime), "MMM dd, yyyy")}
       </TableCell>
-      <TableCell className="flex ml-auto justify-end">
+      <TableCell className="flex justify-end">
         <Button
           variant="ghost"
           size="icon"
