@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { ExternalLinkIcon, MoreVertical, TrashIcon } from "lucide-react"
+import { ExternalLinkIcon, FilePenIcon, MoreVertical, TrashIcon } from "lucide-react"
 import { Id } from "../../../convex/_generated/dataModel"
 import {
   DropdownMenu,
@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { RemoveDialog } from "@/components/remove-dialog"
+import { RenameDialog } from "@/components/rename-dialog"
 
 
 interface DocumentMenuProps {
@@ -30,7 +31,18 @@ export const DocumentMenu = ({ documentId, title, onNewTab }: DocumentMenuProps)
           <MoreVertical className="size-4" />
         </Button>
       </DropdownMenuTrigger>
+
       <DropdownMenuContent>
+        <RenameDialog documentId={documentId}>
+          <DropdownMenuItem
+            onSelect={(e) => e.preventDefault()}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <FilePenIcon className="size-4 mr-2" />
+            Rename
+          </DropdownMenuItem>
+        </RenameDialog>
+
         <RemoveDialog documentId={documentId}>
           <DropdownMenuItem
             onSelect={(e) => e.preventDefault()}
@@ -40,6 +52,7 @@ export const DocumentMenu = ({ documentId, title, onNewTab }: DocumentMenuProps)
             Remove
           </DropdownMenuItem>
         </RemoveDialog>
+
         <DropdownMenuItem
           onClick={() => onNewTab(documentId)}
         >
