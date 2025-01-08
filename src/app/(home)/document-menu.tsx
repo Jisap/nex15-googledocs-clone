@@ -5,8 +5,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { RemoveDialog } from "@/components/remove-dialog"
@@ -16,7 +14,7 @@ import { RenameDialog } from "@/components/rename-dialog"
 interface DocumentMenuProps {
   documentId: Id<"documents">
   title: string
-  onNewTab: (id:Id<"documents">) => void
+  onNewTab: (e: React.MouseEvent) => void
 }
 
 export const DocumentMenu = ({ documentId, title, onNewTab }: DocumentMenuProps) => {
@@ -57,7 +55,7 @@ export const DocumentMenu = ({ documentId, title, onNewTab }: DocumentMenuProps)
         </RemoveDialog>
 
         <DropdownMenuItem
-          onClick={() => onNewTab(documentId)}
+          onClick={(e) => onNewTab(e)}
         >
           <ExternalLinkIcon className="size-4 mr-2"/>
           Open in a new tab

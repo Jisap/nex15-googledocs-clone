@@ -3,8 +3,9 @@ import { Doc } from "../../../convex/_generated/dataModel"
 import { SiGoogledocs } from "react-icons/si"
 import { Building2Icon, CircleUserIcon, MoreVertical } from "lucide-react"
 import { format } from "date-fns"
-import { Button } from "@/components/ui/button"
 import { DocumentMenu } from "./document-menu"
+import { useRouter } from "next/navigation"
+
 
 
 interface DocumentRowProps {
@@ -13,12 +14,11 @@ interface DocumentRowProps {
 
 const DocumentRow = ({ document }: DocumentRowProps) => {
 
-  const onNewTabClick = (id:string) => {
-    window.open(`/documents/${id}`, "_blank") // open in new tab
-  }
+  const router = useRouter()
 
   return (
     <TableRow
+      onClick={() => router.push(`/documents/${document._id}`)}
       className="cursor-pointer"
     >
       <TableCell className="w-[50px]">
@@ -38,7 +38,10 @@ const DocumentRow = ({ document }: DocumentRowProps) => {
         <DocumentMenu 
           documentId={document._id}
           title={document.title}
-          onNewTab={onNewTabClick}
+          onNewTab={(e) => {
+            e.stopPropagation();
+            window.open(`/documents/${document._id}`, "_blank")
+          }} // open in new tab 
         />
       </TableCell>
     </TableRow>
