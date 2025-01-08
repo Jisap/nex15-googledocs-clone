@@ -38,6 +38,7 @@ export const RenameDialog = ({ documentId,initialTitle, children }: RenameDialog
     e.preventDefault();
     setIsUpdating(true);
     update({ id: documentId, title: title.trim() || "Untitled" })
+      .then(() => setOpen(false))
       .finally(() => {
         setIsUpdating(false)
         setOpen(false)
