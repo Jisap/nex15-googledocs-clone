@@ -26,9 +26,26 @@ export const create = mutation({
 
 
 export const get = query({
-  args: { paginationOpts: paginationOptsValidator },
-  handler: async (ctx, args) => {
-    return await ctx.db.query("documents").paginate(args.paginationOpts);
+  args: { paginationOpts: paginationOptsValidator, search: v.optional(v.string()) }, // Se reciben los parametros de paginación y búsqueda
+  handler: async (ctx, { search, paginationOpts }) => {
+    const user = await ctx.auth.getUserIdentity();
+    if(!user){
+      throw new ConvexError("Unauthorized");
+    }
+
+    if(search){
+      return await ctx.db
+        .query("documents")
+        .withSearchIndex("search_title", (q) =>                  // Usamos el index de búsqueda por title
+          q.search("title", search).eq("ownerId", user.subject)  // y buscamos un title donde el ownerId = usuario logueado
+        )
+        .paginate(paginationOpts);                               // Al final se paginan los resultados 
+    }
+
+    return await ctx.db
+      .query("documents")
+      .withIndex("by_owner_id", (q) => q.eq("ownerId", user.subject))  // Buscamos los documentos donde el ownerId = usuario logueado
+      .paginate(paginationOpts);
     
   },
 });
