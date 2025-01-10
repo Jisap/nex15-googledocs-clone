@@ -14,9 +14,14 @@ export const create = mutation({
       throw new ConvexError("Unauthorized");
     }
 
+    const organizationId = (user.organization_id ?? undefined) as
+      | string
+      | undefined;
+
     const documentId = await ctx.db.insert("documents", {
       title: args.title ?? "",
       ownerId: user.subject,
+      organizationId,
       initialContent: args.initialContent,
     });
 
@@ -33,18 +38,40 @@ export const get = query({
       throw new ConvexError("Unauthorized");
     }
 
-    if(search){
+    const organizationId = (user.organization_id ?? undefined) as
+      | string
+      | undefined;
+
+    if(search && organizationId){                                         // Si tenemos un término de búsqueda y una organización
       return await ctx.db
-        .query("documents")
-        .withSearchIndex("search_title", (q) =>                  // Usamos el index de búsqueda por title
-          q.search("title", search).eq("ownerId", user.subject)  // y buscamos un title donde el ownerId = usuario logueado
+        .query("documents")                                               // Buscamos los documentos
+        .withSearchIndex("search_title", (q) =>                           // usando el index de búsqueda por title
+          q.search("title", search).eq("organizationId", organizationId)  // y buscamos un title donde la organizaciónId = organización logueada
         )
-        .paginate(paginationOpts);                               // Al final se paginan los resultados 
+        .paginate(paginationOpts); 
     }
 
-    return await ctx.db
+    if(search){                                                           // Si solo tenemos un término de búsqueda
+      return await ctx.db
+        .query("documents")
+        .withSearchIndex("search_title", (q) =>                           // Usamos el index de búsqueda por title
+          q.search("title", search).eq("ownerId", user.subject)           // y buscamos un title donde el ownerId = usuario logueado
+        )
+        .paginate(paginationOpts);                                        // Al final se paginan los resultados 
+    }
+
+    if(organizationId){                                                   // Si solo tenemos una organización
+      return await ctx.db
+        .query("documents")                                               // Buscamos los documentos
+        .withIndex("by_organization_id", (q) =>                           // usando el index de búsqueda por organización
+          q.eq("organizationId", organizationId)                          // que pertenecen a la organización logueada
+        )
+        .paginate(paginationOpts);
+    }
+
+    return await ctx.db                                                   // Busqueda sin filtros para los documentos de tu personal account
       .query("documents")
-      .withIndex("by_owner_id", (q) => q.eq("ownerId", user.subject))  // Buscamos los documentos donde el ownerId = usuario logueado
+      .withIndex("by_owner_id", (q) => q.eq("ownerId", user.subject))     // Buscamos los documentos donde el ownerId = usuario logueado
       .paginate(paginationOpts);
     
   },
