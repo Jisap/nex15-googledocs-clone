@@ -21,9 +21,12 @@ import TextAlign from '@tiptap/extension-text-align'
 import { FontSizeExtension } from '@/extensions/font-size'
 import { LineHeightExtension } from '@/extensions/line-height'
 import { Ruler } from './ruler'
+import { useLiveblocksExtension } from "@liveblocks/react-tiptap";
 
 
 export const Editor = () => {
+
+  const liveBlocks = useLiveblocksExtension()
 
   const { setEditor } = useEditorStore();
 
@@ -62,6 +65,7 @@ export const Editor = () => {
       },
     },
     extensions: [
+      liveBlocks,
       StarterKit,
       LineHeightExtension.configure({
         types: ['heading', 'paragraph'],
