@@ -113,7 +113,7 @@ export const updateById = mutation({
   handler: async (ctx, args) => {
     const user = await ctx.auth.getUserIdentity();
     if (!user) {
-      throw new ConvexError("Unauthorized");
+      throw new ConvexError("Unauthorized");                            
     }
 
     const organizationId = (user.organization_id ?? undefined) as
@@ -132,6 +132,13 @@ export const updateById = mutation({
     }
 
     return await ctx.db.patch(args.id, { title: args.title });
+  }
+})
+
+export const getById = query({
+  args: {id: v.id("documents")},
+  handler: async (ctx, { id }) => {
+    return await ctx.db.get(id);      
   }
 })
 

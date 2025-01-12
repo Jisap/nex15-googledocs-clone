@@ -15,9 +15,14 @@ export function Room({ children }: { children: ReactNode }) {
   const params = useParams()
 
   return (
-    <LiveblocksProvider publicApiKey="pk_dev_6AJfCyPvYSU6vJsTLeCMforoMw2TVK4N7He7nm5QplBhPDM_c-liY10_HCO-kOOJ">
-      <RoomProvider id={params.documentId as string}>
+    <LiveblocksProvider 
+      throttle={16}                        // Define la cantidad de actualizaciones por segundo (en este caso, 16 FPS).
+      authEndpoint="/api/liveblocks-auth"  // Utiliza el endpoint /api/liveblocks-auth para verificar los permisos y generar un token de acceso para el usuario.
+    >
+      {/* RoomProvider configura la sala específica basada en params.documentId. */}
+      <RoomProvider id={params.documentId as string}>  
         <ClientSideSuspense fallback={<div>Loading…</div>}>
+        {/* Una vez configurada la sala, los hijos (children) tienen acceso a las funcionalidades en tiempo real de Liveblocks. */}
           {children}
         </ClientSideSuspense>
       </RoomProvider>
