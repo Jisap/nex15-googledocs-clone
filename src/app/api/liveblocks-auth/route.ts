@@ -31,7 +31,7 @@ export async function POST(req:Request) {
   }
 
   const isOwner = document.ownerId === user.id                                   // Comprobamos si el usuario logueado es el propietario del documento
-  const isOrganizationMember = document.organizationId === sessionClaims.org_id  // Se comprueba si el usuario logueado es miembro de la organización
+  const isOrganizationMember = !!(document.organizationId && document.organizationId === sessionClaims.org_id)  // Se comprueba si el usuario logueado es miembro de la organización
 
   if (!isOwner && !isOrganizationMember){
     return new Response("Unauthorized", {status: 401})
