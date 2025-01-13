@@ -2,7 +2,7 @@
 
 "use client";
 
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import {
   LiveblocksProvider,
   RoomProvider,
@@ -10,6 +10,8 @@ import {
 } from "@liveblocks/react/suspense";
 import { useParams } from "next/navigation";
 import { FullscreenLoader } from "@/components/fullscreen-loader";
+import { getUsers } from "./action";
+import { toast } from "sonner";
 
 type User = {
   id: string;
@@ -23,12 +25,37 @@ export function Room({ children }: { children: ReactNode }) {
 
   const [users, setUsers] = useState<User[]>([]);
 
+  const fetchUsers = useMemo(() => async() => {
+      try {
+        const list = await getUsers();
+        setUsers(list);
+      } catch (error) { 
+        toast.error("Failed to fetch users");
+      }
+  },[]);
+
+  useEffect(() => {
+    fetchUsers()
+  }, [fetchUsers])
+
   return (
     <LiveblocksProvider 
-      throttle={16}                        // Define la cantidad de actualizaciones por segundo (en este caso, 16 FPS).
-      authEndpoint="/api/liveblocks-auth"  // Utiliza el endpoint /api/liveblocks-auth para verificar los permisos y generar un token de acceso para el usuario.
-      resolveUsers={() => []}
-      resolveMentionSuggestions={() => []}
+      throttle={16}                                                         // Define la cantidad de actualizaciones por segundo (en este caso, 16 FPS).
+      authEndpoint="/api/liveblocks-auth"                                   // Utiliza el endpoint /api/liveblocks-auth para verificar los permisos y generar un token de acceso para el usuario.
+      resolveUsers={({userIds}) => {                                        // Se recibe el array de Users de la room y se desestructuran los ids (usersIds)
+        return userIds.map(                                                 // Estos se mapean  
+          (userId) => users.find((user) => user.id === userId) ?? undefined // y se devuelve un userId que === al user.id de la lista de users
+        )
+      }}
+      resolveMentionSuggestions={({ text }) => {
+        let filteredUsers = users;
+        if( text ){
+          filteredUsers = users.filter((user) =>                            // Se filtran los users por el texto de búsqueda
+            user.name.toLocaleLowerCase().includes(text.toLocaleLowerCase())
+          )
+        }
+        return filteredUsers.map((user) => user.id)
+      }}
       resolveRoomsInfo={() => []}
     >
       {/* RoomProvider configura la sala específica basada en params.documentId. */}
