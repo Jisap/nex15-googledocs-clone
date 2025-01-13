@@ -39,7 +39,7 @@ export async function POST(req:Request) {
 
   const session = liveblocks.prepareSession(user.id, {                     // Si se valido el usuario, se crea una sesión de liveblocks
     userInfo: {                                                            // Se agrega información sobre el usuario
-      name: user.fullName ?? "Anonymous",
+      name: user.fullName ?? user.primaryEmailAddress?.emailAddress ?? "Anonymous",
       avatar: user.imageUrl
     }
   });
