@@ -26,6 +26,7 @@ export const Inbox = () => {
       >
           <BellIcon className="size-5" />
         </Button>
+        <Separator orientation="vertical" className="h-6" />
       </>
     }>
       <InboxMenu />
