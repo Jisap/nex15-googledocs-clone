@@ -142,3 +142,24 @@ export const getById = query({
   }
 })
 
+export const getByIds = query({
+  args: { ids: v.array(v.id("documents")) },    // Se reciben los ids de los documentos que se desea obtener
+  handler: async (ctx, { ids }) => {
+    const documents = []
+    for(const id of ids){                       // Se iteran los ids y se obtienen los documentos asociados
+      const document = await ctx.db.get(id);
+      if(document){
+        documents.push({
+          id: document._id,
+          name: document.title,
+        })} else {
+          documents.push({
+            id,
+            name: "[Removed]"
+          })
+        }
+    }
+    return documents
+  }
+})
+

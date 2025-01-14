@@ -10,8 +10,9 @@ import {
 } from "@liveblocks/react/suspense";
 import { useParams } from "next/navigation";
 import { FullscreenLoader } from "@/components/fullscreen-loader";
-import { getUsers } from "./action";
+import { getUsers, getDocuments } from "./action";
 import { toast } from "sonner";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 type User = {
   id: string;
@@ -40,8 +41,18 @@ export function Room({ children }: { children: ReactNode }) {
 
   return (
     <LiveblocksProvider 
-      throttle={16}                                                         // Define la cantidad de actualizaciones por segundo (en este caso, 16 FPS).
-      authEndpoint="/api/liveblocks-auth"                                   // Utiliza el endpoint /api/liveblocks-auth para verificar los permisos y generar un token de acceso para el usuario.
+      throttle={16}                                                        // Define la cantidad de actualizaciones por segundo (en este caso, 16 FPS).
+      authEndpoint={
+        async() => {
+          const endpoint = "/api/liveblocks-auth";                         // Utiliza el endpoint /api/liveblocks-auth para verificar los permisos y generar un token de acceso para el usuario.
+          const room = params.documentId as string;
+          const response = await fetch( endpoint, {
+            method: "POST",
+            body: JSON.stringify({ room }),
+          })
+          return await response.json();
+        }
+      }                                  
       resolveUsers={({userIds}) => {                                        // Se recibe el array de Users de la room y se desestructuran los ids (usersIds)
         return userIds.map(                                                 // Estos se mapean  
           (userId) => users.find((user) => user.id === userId) ?? undefined // y se devuelve un userId que === al user.id de la lista de users
@@ -56,7 +67,13 @@ export function Room({ children }: { children: ReactNode }) {
         }
         return filteredUsers.map((user) => user.id)
       }}
-      resolveRoomsInfo={() => []}
+      resolveRoomsInfo={async({ roomIds }) => {
+        const documents = await getDocuments(roomIds as Id<"documents">[]);
+        return documents.map((document) => ({
+          id: document.id,
+          name: document.name
+        }))
+      }}
     >
       {/* RoomProvider configura la sala específica basada en params.documentId. */}
       <RoomProvider id={params.documentId as string}>  
