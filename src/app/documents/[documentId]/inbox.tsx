@@ -15,7 +15,16 @@ import { Button } from "@/components/ui/button";
 
 export const Inbox = () => {
   return (
-    <ClientSideSuspense fallback={null}>
+    <ClientSideSuspense fallback={
+      <Button
+        variant={"ghost"}
+        className="relative"
+        size="icon"
+        disabled
+      >
+        <BellIcon className="size-5" />
+      </Button>
+    }>
       <InboxMenu />
     </ClientSideSuspense>
   )
