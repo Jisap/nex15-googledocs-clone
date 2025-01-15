@@ -76,7 +76,13 @@ export function Room({ children }: { children: ReactNode }) {
       }}
     >
       {/* RoomProvider configura la sala específica basada en params.documentId. */}
-      <RoomProvider id={params.documentId as string}>  
+      <RoomProvider 
+        id={params.documentId as string}
+        initialStorage={{
+          leftMargin: 56,
+          rightMargin: 56,
+        }}  
+      >  
         <ClientSideSuspense fallback={<FullscreenLoader label="Room loading" />}>
         {/* Una vez configurada la sala, los hijos (children) tienen acceso a las funcionalidades en tiempo real de Liveblocks. */}
           {children}
