@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 // Función para aplazar la ejecución de una función
-// args representan los parámetros que necesita la función a retrasar. El tipo genérico <T> asegura que el hook sea flexible para aceptar cualquier función con parámetros y valores de retorno.
+// args representan los parámetros que necesita la función a retrasar callback. El tipo genérico <T> asegura que el hook sea flexible para aceptar cualquier función con parámetros y valores de retorno.
 // callback es la función que queremos ejecutar despues del retraso con esos parámetros.
 
 export function useDebounce<T extends (...args: Parameters<T>) => ReturnType<T>,>(callback: T, delay: number = 500) { 
