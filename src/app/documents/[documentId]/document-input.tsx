@@ -3,6 +3,8 @@ import { Id } from "../../../../convex/_generated/dataModel";
 import { useRef, useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
+import { useDebounce } from "@/hooks/use-debounce";
+import { toast } from "sonner";
 
 interface DocumentInputProps {
   title: string;
@@ -20,9 +22,19 @@ export const DocumentInput = ({title, id}: DocumentInputProps) => {
 
   const mutate = useMutation(api.documents.updateById);
 
+  const debouncedUpdate = useDebounce((newValue: string) => { // El código que existe en el debounceUpdate se ejecuta después del retraso. Se vita así una actualización con cada pulsación del teclado.
+    if(newValue === title) return;
+    setIsPending(true);
+    mutate({ id, title: newValue })
+      .then(() => toast.success("Document updated"))
+      .catch(() => toast.error("Something went wrong"))
+      .finally(() => setIsPending(false));
+  })
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setValue(newValue);
+    debouncedUpdate(newValue);
   };
 
   return (
