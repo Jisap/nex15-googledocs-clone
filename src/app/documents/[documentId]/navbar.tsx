@@ -22,10 +22,15 @@ import { useEditorStore } from "@/store/use-editor-store"
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs"
 import { Avatars } from "./avatars"
 import { Inbox } from "./inbox"
+import { Doc } from "../../../../convex/_generated/dataModel"
 
 
 
-const Navbar = () => {
+interface NavbarProps {
+  data: Doc<"documents">
+}
+
+const Navbar = ({ data }:NavbarProps) => {
 
   const { editor } = useEditorStore();
   
@@ -45,21 +50,21 @@ const Navbar = () => {
     if(!editor) return;
     const content = editor.getJSON();                                                       // Obtiene el contenido del editor como JSON
     const blob = new Blob([JSON.stringify(content)], { type: 'application/json' });         // Crea un blob con el JSON
-    onDownload(blob, 'document.json');                                                      // Descarga el archivo con la función de onDownload
+    onDownload(blob, `${data.title}.json`);                                                 // Descarga el archivo con la función de onDownload
   }
 
   const onSaveHTML = () => {                                                                // Función para guardar el contenido del editor como HTML
     if(!editor) return
     const content = editor.getHTML();                                                       // Obtiene el contenido del editor como HTML
     const blob = new Blob([content], { type: 'text/html' });                                // Crea un blob con el HTML
-    onDownload(blob, 'document.html');                                                      // Descarga el archivo con la función de onDownload
+    onDownload(blob, `${data.title}.html`);                                                      // Descarga el archivo con la función de onDownload
   }
 
   const onSaveText = () => {                                                                // Función para guardar el contenido del editor como texto
     if(!editor) return
     const content = editor.getText();                                                       // Obtiene el contenido del editor como texto
     const blob = new Blob([content], { type: 'text/plain' });                               // Crea un blob con el texto
-    onDownload(blob, 'document.txt');                                                      // Descarga el archivo con la función de onDownload
+    onDownload(blob, `${data.title}.txt`);                                                      // Descarga el archivo con la función de onDownload
   }
 
   return (
@@ -75,7 +80,10 @@ const Navbar = () => {
         </Link>
 
         <div className="flex flex-col">
-          <DocumentInput />
+          <DocumentInput 
+            title={data.title}
+            id={data._id}  
+          />
           <div className="flex">
             <Menubar className="border-none bg-transparent shadow-none h-auto p-0">
               <MenubarMenu>
