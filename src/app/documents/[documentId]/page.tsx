@@ -25,10 +25,6 @@ const documentIdPage = async ({ params }: DocumentIdPageProps) => {  // La preca
     { token }
   )
 
-  if(!preloadedDocument){
-    throw new Error("Document not found");
-  }
-
   return <Document preloadedDocument={preloadedDocument} />   // La precarga se pasa a al <Document /> del lado del cliente
 }
 
