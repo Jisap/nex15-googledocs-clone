@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 
 // Función para aplazar la ejecución de una función
 // args representan los parámetros que necesita la función a retrasar callback. El tipo genérico <T> asegura que el hook sea flexible para aceptar cualquier función con parámetros y valores de retorno.

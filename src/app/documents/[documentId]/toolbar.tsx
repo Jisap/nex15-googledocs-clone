@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { type Level } from "@tiptap/extension-heading"
 import { type ColorResult, SketchPicker } from "react-color"
-import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react"
+import { ChangeEvent, KeyboardEvent, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import {

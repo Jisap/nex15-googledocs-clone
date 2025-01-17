@@ -19,6 +19,7 @@ type User = {
   id: string;
   name: string;
   avatar: string;
+  color: string;
 }
 
 export function Room({ children }: { children: ReactNode }) {
@@ -31,7 +32,7 @@ export function Room({ children }: { children: ReactNode }) {
       try {
         const list = await getUsers();
         setUsers(list);
-      } catch (error) { 
+      } catch { 
         toast.error("Failed to fetch users");
       }
   },[]);

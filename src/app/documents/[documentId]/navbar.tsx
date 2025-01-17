@@ -16,7 +16,24 @@ import {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "@/components/ui/menubar"
-import { BoldIcon, FileIcon, FileJsonIcon, FilePenIcon, FilePlusIcon, FileTextIcon, GlobeIcon, ItalicIcon, Menu, PrinterIcon, Redo2Icon, RemoveFormatting, RemoveFormattingIcon, StrikethroughIcon, TextIcon, TrashIcon, UnderlineIcon, Undo2Icon } from "lucide-react"
+import { 
+  BoldIcon, 
+  FileIcon, 
+  FileJsonIcon, 
+  FilePenIcon, 
+  FilePlusIcon, 
+  FileTextIcon, 
+  GlobeIcon, 
+  ItalicIcon, 
+  PrinterIcon, 
+  Redo2Icon, 
+  RemoveFormattingIcon, 
+  StrikethroughIcon, 
+  TextIcon, 
+  TrashIcon, 
+  UnderlineIcon, 
+  Undo2Icon 
+} from "lucide-react"
 import { BsFilePdf } from "react-icons/bs"
 import { useEditorStore } from "@/store/use-editor-store"
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs"

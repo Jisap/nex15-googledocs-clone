@@ -1,7 +1,7 @@
 
 
 import { create } from 'zustand';
-import { type Editor, useEditor } from '@tiptap/react';
+import { type Editor } from '@tiptap/react';
 
 interface EditorState {
   editor: Editor | null;
